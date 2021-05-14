@@ -68,7 +68,7 @@ export default function Register() {
               name='username'
               icon='user'
               iconPosition='left'
-              placeholer='Username'
+              placeholder='Username'
               onChange={changeHandler}
               type='text'
             />
@@ -77,7 +77,7 @@ export default function Register() {
               name='email'
               icon='mail'
               iconPosition='left'
-              placeholer='Email'
+              placeholder='Email'
               className={handleInputError(errors, 'email')}
               onChange={changeHandler}
               type='email'
@@ -87,7 +87,7 @@ export default function Register() {
               name='password'
               icon='lock'
               iconPosition='left'
-              placeholer='Password'
+              placeholder='Password'
               className={handleInputError(errors, 'password')}
               onChange={changeHandler}
               type='password'
@@ -97,7 +97,7 @@ export default function Register() {
               name='confirmPassword'
               icon='repeat'
               iconPosition='left'
-              placeholer='Confirm Password'
+              placeholder='Confirm Password'
               className={handleInputError(errors, 'password')}
               onChange={changeHandler}
               type='password'
