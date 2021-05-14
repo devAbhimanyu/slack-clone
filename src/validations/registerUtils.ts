@@ -18,6 +18,7 @@ export const isFormValid = (
     return true;
   }
 };
+
 export const handleInputError = (errors: RegError[], inputName: string) => {
   return errors.some((error) => error.message.toLowerCase().includes(inputName))
     ? 'error'

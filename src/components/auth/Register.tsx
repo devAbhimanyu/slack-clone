@@ -13,6 +13,8 @@ import { isFormValid, handleInputError } from 'validations';
 import { createUser } from 'utility';
 import { RegisteValues, InputChangeEvent, FormSubmit, RegError } from 'types';
 
+type Name = 'email' | 'username' | 'password' | 'confirmPassword';
+
 export default function Register() {
   const [register, setRegister] = useState<RegisteValues>({
     email: '',
@@ -22,13 +24,10 @@ export default function Register() {
   });
   const [errors, setError] = useState<RegError[]>([]);
   const [loading, setloading] = useState<boolean>(false);
+
   const changeHandler: InputChangeEvent = (e): void => {
     const { value } = e.target;
-    const name = e.target.name as
-      | 'email'
-      | 'username'
-      | 'password'
-      | 'confirmPassword';
+    const name = e.target.name as Name;
     const stateCopy = { ...register };
     stateCopy[name] = value;
     setRegister(stateCopy);
