@@ -16,4 +16,5 @@ export type RegError = {
 
 export interface AuthState {
   userData: FirebaseUser;
+  loader: boolean;
 }

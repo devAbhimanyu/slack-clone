@@ -3,6 +3,7 @@ import { AuthState } from 'types';
 
 const initialState: AuthState = {
   userData: { credential: null, user: null },
+  loader: true,
 };
 
 const authSlice = createSlice({
@@ -11,6 +12,7 @@ const authSlice = createSlice({
   reducers: {
     setUser(state, { payload }) {
       state.userData = payload;
+      state.loader = false;
     },
     clearUser(state) {
       state.userData = { credential: null, user: null };

@@ -27,6 +27,7 @@ export default function Login() {
   };
   const isFormValid = ({ email, password }: LoginValues): boolean =>
     email && password ? true : false;
+
   const submitHandler: FormSubmit = async (e) => {
     e.preventDefault();
     const result = isFormValid(login);
@@ -43,8 +44,10 @@ export default function Login() {
       }
     }
   };
+
   const displayErrors = (errors: RegError[]) =>
     errors.map((error, i) => <p key={i}>{error.message}</p>);
+
   return (
     <Grid textAlign='center' verticalAlign='middle' className='app'>
       <Grid.Column style={{ maxWidth: 450 }}>
