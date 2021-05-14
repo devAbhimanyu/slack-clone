@@ -30,6 +30,10 @@ export const createUser = async (
   }
 };
 
+export const loginUser = async (email: string, password: string) => {
+  return firebase.auth().signInWithEmailAndPassword(email, password);
+};
+
 const saveUser = async (createdUser: firebase.auth.UserCredential) => {
   if (createdUser?.user) {
     return usersRef.child(createdUser.user.uid).set({
