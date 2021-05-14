@@ -59,7 +59,7 @@ export default function Login() {
               name='email'
               icon='mail'
               iconPosition='left'
-              placeholer='Email'
+              placeholder='Email'
               className={handleInputError(errors, 'email')}
               onChange={changeHandler}
               type='email'
@@ -69,7 +69,7 @@ export default function Login() {
               name='password'
               icon='lock'
               iconPosition='left'
-              placeholer='Password'
+              placeholder='Password'
               className={handleInputError(errors, 'password')}
               onChange={changeHandler}
               type='password'
@@ -92,7 +92,7 @@ export default function Login() {
           </Message>
         )}
         <Message>
-          Already a user? <Link to='/login'>Login</Link>
+          Not a user? <Link to='/register'>Register</Link>
         </Message>
       </Grid.Column>
     </Grid>
