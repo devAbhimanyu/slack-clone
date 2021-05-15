@@ -11,7 +11,8 @@ export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (_, { rejectWithValue }) => {
     try {
-      const loggedOutBool = signoutUser();
+      const loggedOutBool = await signoutUser();
+      // console.log('logout' + loggedOutBool)
       if (!loggedOutBool) throw 'problem with signout';
     } catch (err) {
       return rejectWithValue(err);
