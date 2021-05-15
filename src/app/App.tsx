@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Register, Spinner } from 'components';
 import { Login, setUser } from 'features/Auth/';
 import { RootReducer, AuthState } from 'types';
-import firebase from 'firebase';
+import firebase from 'config/firebase.prod';
 import './App.css';
 import Home from 'features/Home/Home';
 

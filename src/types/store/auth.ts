@@ -1,6 +1,6 @@
 import firebase from 'config/firebase.prod';
 
-export type FirebaseUser = firebase.auth.UserCredential;
+export type FirebaseUser = firebase.UserInfo;
 
 export type LoginValues = {
   email: string;
@@ -15,6 +15,7 @@ export type RegError = {
 };
 
 export interface AuthState {
-  userData: FirebaseUser;
+  userData: FirebaseUser | null;
   loader: boolean;
+  error?: any;
 }
