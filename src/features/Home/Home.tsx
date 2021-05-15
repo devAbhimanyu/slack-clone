@@ -1,9 +1,10 @@
+import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { useSelector } from 'react-redux';
-import { ColorPanel } from 'components';
+import { ColorPanel, Messages, SidePanel, MetaPanel } from 'components';
 import { AuthState, RootReducer } from 'types';
 
-export default function Home() {
+const Home: React.FC = () => {
   const { userData } = useSelector<RootReducer, AuthState>(
     (state) => state.auth,
   );
@@ -11,6 +12,11 @@ export default function Home() {
   return (
     <Grid columns='equal' className='app' style={{ background: '#eee' }}>
       <ColorPanel />
+      <SidePanel />
+      <Messages />
+      <MetaPanel />
     </Grid>
   );
-}
+};
+
+export default Home;

@@ -6,6 +6,7 @@ import { Login, setUser } from 'features/Auth/';
 import { RootReducer, AuthState } from 'types';
 import firebase from 'firebase';
 import './App.css';
+import Home from 'features/Home/Home';
 
 function App() {
   const navigate = useHistory();
@@ -23,12 +24,12 @@ function App() {
     });
   }, []);
   return (
-    <div className='App'>
+    <div className='app'>
       {loader ? (
         <Spinner displayText='Getting ready ...' />
       ) : (
         <Switch>
-          <Route exact path='/' render={() => <div>authenticated</div>} />
+          <Route exact path='/' component={Home} />
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
         </Switch>
