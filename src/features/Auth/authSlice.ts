@@ -1,10 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthState } from 'types';
+import { signoutUser } from 'utility';
 
 const initialState: AuthState = {
-  userData: { credential: null, user: null },
+  userData: null,
   loader: true,
 };
+
+export const logoutUser = createAsyncThunk(
+  'auth/logoutUser',
+  async (_, { rejectWithValue }) => {
+    try {
+      const loggedOutBool = await signoutUser();
+      // console.log('logout' + loggedOutBool)
+      if (!loggedOutBool) throw 'problem with signout';
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  },
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -15,9 +29,20 @@ const authSlice = createSlice({
       state.loader = false;
     },
     clearUser(state) {
-      state.userData = { credential: null, user: null };
+      state.userData = null;
+    },
+    closeLoader(state) {
+      state.loader = false;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(logoutUser.fulfilled, (state) => {
+      state.userData = null;
+    });
+    builder.addCase(logoutUser.rejected, (state, { payload }) => {
+      state.error = payload;
+    });
+  },
 });
-export const { setUser, clearUser } = authSlice.actions;
+export const { setUser, clearUser, closeLoader } = authSlice.actions;
 export default authSlice.reducer;

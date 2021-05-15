@@ -12,6 +12,9 @@ body {
   background: #eee;
 }
 
+.app{
+  height: inherit;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

@@ -7,3 +7,7 @@ export type FormSubmit = (
   event: React.FormEvent<HTMLFormElement>,
   data: FormProps,
 ) => void;
+
+export type ClickEvent =
+  | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
+  | undefined;
