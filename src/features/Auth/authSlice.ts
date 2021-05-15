@@ -31,6 +31,9 @@ const authSlice = createSlice({
     clearUser(state) {
       state.userData = null;
     },
+    closeLoader(state) {
+      state.loader = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(logoutUser.fulfilled, (state) => {
@@ -41,5 +44,5 @@ const authSlice = createSlice({
     });
   },
 });
-export const { setUser, clearUser } = authSlice.actions;
+export const { setUser, clearUser, closeLoader } = authSlice.actions;
 export default authSlice.reducer;

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Register, Spinner } from 'components';
-import { Login, setUser } from 'features/Auth/';
+import { Login, setUser, closeLoader } from 'features/Auth/';
 import { RootReducer, AuthState } from 'types';
 import firebase from 'config/firebase.prod';
 import './App.css';
@@ -19,6 +19,7 @@ function App() {
         dispatch(setUser({ uid, displayName, photoURL, email, emailVerified }));
         navigate.push('/');
       } else {
+        dispatch(closeLoader());
         navigate.push('/login');
       }
     });

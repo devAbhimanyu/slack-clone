@@ -11,7 +11,10 @@ export const startChannelSub = async (dispatcher: FetchChannel) => {
   });
 };
 
-export const closeChannelSub = () => channelRef.off();
+export const closeChannelSub = () => {
+  channelRef.off();
+  console.log('connection closed');
+};
 
 export const addChannel = (channel: ChannelInstance) => {
   const key = channelRef.push().key as string;
