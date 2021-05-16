@@ -1,14 +1,10 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
 // import { useSelector } from 'react-redux';
-import { ColorPanel, Messages, SidePanel, MetaPanel } from 'components';
-// import { AuthState, RootReducer, FirebaseUser } from 'types';
+import Messages from '../Messages/Messages';
+import { ColorPanel, SidePanel, MetaPanel } from 'components';
 
 const Home: React.FC = () => {
-  // const { userData } = useSelector<RootReducer, AuthState>(
-  //   (state) => state.auth,
-  // );
-  // const { displayName } = userData as FirebaseUser;
   return (
     <Grid columns='equal' className='app' style={{ background: '#eee' }}>
       <ColorPanel />

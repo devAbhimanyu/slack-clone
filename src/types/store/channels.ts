@@ -15,4 +15,4 @@ export type NewChannel = {
   channelDetails?: string;
 };
 
-export type FetchChannel = (channelList: ChannelState['channels']) => void;
+export type FetchChannel = <T>(channelList: ChannelState['channels']) => void;

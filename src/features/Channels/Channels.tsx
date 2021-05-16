@@ -12,6 +12,7 @@ import {
   InputChangeEvent,
   ClickEvent,
 } from 'types';
+import { setMessages } from 'features/Messages/messageSlice';
 
 const initialNewChannelState: NewChannel = {
   channelDetails: '',
@@ -31,7 +32,9 @@ const Channels: React.FC = () => {
   const [newChannel, setNewChannel] = useState<NewChannel>(
     initialNewChannelState,
   );
+
   const [modal, setmodal] = useState(false);
+
   const fetchChannels = useCallback(
     (channelList: ChannelState['channels']) => {
       dispatch(setChannels(channelList));
@@ -55,7 +58,10 @@ const Channels: React.FC = () => {
       ? channels.map((channel) => (
           <Menu.Item
             key={channel.id}
-            onClick={() => dispatch(setActiveChannel(channel))}
+            onClick={() => {
+              dispatch(setActiveChannel(channel));
+              dispatch(setMessages([]));
+            }}
             name={channel.name}
             style={{ opacity: 0.7 }}
             active={channel.id === activeChannel?.id}

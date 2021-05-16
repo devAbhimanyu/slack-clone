@@ -1,3 +1,4 @@
 export * from './auth';
-export * from './root';
 export * from './channels';
+export * from './messages';
+export * from './root';
