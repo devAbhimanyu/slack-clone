@@ -25,7 +25,7 @@ const MessageForm: React.FC = () => {
   const [uploadTask, setUploadTask] = useState<UploadTask | null>(null);
   const [message, setMessage] = useState('');
   const [fileUploadPerc, setFileUploadPerc] = useState(0);
-  const [fileUploadStatus, setFileFileUploadStatus] = useState(false);
+  const [fileUploadStatus, setFileUploadStatus] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [modal, setModal] = useState(false);
@@ -36,7 +36,6 @@ const MessageForm: React.FC = () => {
     if (error) setError(true);
   };
 
-  //eslin
   const createMessage: (filePath?: string) => Promise<void> = async (
     filePath = '',
   ) => {
@@ -73,7 +72,7 @@ const MessageForm: React.FC = () => {
       downloadUrl,
     );
     setMessage('');
-    setLoading(true);
+    setLoading(false);
     setUploadTask(null);
     if (!status) {
       setError(true);
@@ -82,6 +81,7 @@ const MessageForm: React.FC = () => {
 
   useEffect(() => {
     if (uploadTask && fileUploadPerc === 100) {
+      setFileUploadStatus(false);
       uploadTask.snapshot.ref
         .getDownloadURL()
         .then((downloadUrl) => {
@@ -98,7 +98,7 @@ const MessageForm: React.FC = () => {
 
   useEffect(() => {
     if (uploadTask) {
-      setFileFileUploadStatus(true);
+      setFileUploadStatus(true);
       uploadTask.on(
         'state_changed',
         (snap) => {
@@ -106,7 +106,6 @@ const MessageForm: React.FC = () => {
             (snap.bytesTransferred / snap.totalBytes) * 100,
           );
           setFileUploadPerc(percentUploaded);
-          setFileFileUploadStatus(false);
         },
         (err) => {
           console.error(err);
@@ -141,6 +140,7 @@ const MessageForm: React.FC = () => {
         />
         <Button
           color='teal'
+          disabled={fileUploadStatus}
           content='Upload Media'
           labelPosition='right'
           icon='cloud upload'
