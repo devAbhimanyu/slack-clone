@@ -15,3 +15,5 @@ export type ClickEvent =
 
 export type ChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => void;
 export type UploadTask = firebase.storage.UploadTask;
+
+export type StringToVoidFunc = (str: string) => void;

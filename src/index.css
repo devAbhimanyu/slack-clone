@@ -25,6 +25,7 @@ code {
 .messages {
   height: 440px;
   overflow-y: scroll;
+  max-width: 100% !important;
 }
 
 /* MessageForm.js */

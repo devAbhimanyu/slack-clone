@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useEffect } from 'react';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Segment, Comment } from 'semantic-ui-react';
 import { MessageForm, MessageHeader, Message } from 'components';
@@ -10,6 +10,7 @@ import {
   AuthState,
   ChannelState,
   FetchMessages,
+  Message as MessageM,
 } from 'types';
 
 const Messages: React.FC = () => {
@@ -24,6 +25,7 @@ const Messages: React.FC = () => {
     (state) => state.channel,
   );
 
+  const [filterList, setFilterList] = useState<MessageM[]>([]);
   const fetchMessages: FetchMessages = useCallback(
     (meesageList: MessageState['messages']) => {
       dispatch(setMessages(meesageList));
@@ -36,9 +38,25 @@ const Messages: React.FC = () => {
       startMessageFetch(fetchMessages, activeChannel.id as string);
   }, [activeChannel]);
 
+  const handleSearchMessages = (searchTerm: string) => {
+    const channelMessages = [...messages];
+    const regex = new RegExp(searchTerm, 'gi');
+    const searchResults = channelMessages.reduce((acc, message) => {
+      if (
+        (message.content && message.content.match(regex)) ||
+        message.user.name.match(regex)
+      ) {
+        acc.push(message);
+      }
+      return acc;
+    }, [] as MessageM[]);
+    setFilterList(searchResults);
+  };
+
   const messageList = useMemo(() => {
+    const list = filterList.length ? filterList : messages;
     return loaded && userData
-      ? messages.map((m) => (
+      ? list.map((m) => (
           <Message
             key={m.timestamp as string}
             currUser={userData}
@@ -46,11 +64,14 @@ const Messages: React.FC = () => {
           />
         ))
       : null;
-  }, [dispatch, userData, messages, loaded]);
+  }, [dispatch, userData, messages, filterList, loaded]);
 
   return (
     <>
-      <MessageHeader />
+      <MessageHeader
+        messages={messages}
+        searchCallback={handleSearchMessages}
+      />
 
       <Segment>
         <Comment.Group className='messages'>{messageList}</Comment.Group>
