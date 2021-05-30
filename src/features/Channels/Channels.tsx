@@ -5,7 +5,7 @@ import { setChannels, setActiveChannel } from './channelSlice';
 import { closeChannelSub, startChannelSub, addChannel } from 'utility';
 import {
   ChannelState,
-  AuthState,
+  FirebaseUser,
   RootReducer,
   ChannelInstance,
   NewChannel,
@@ -19,11 +19,13 @@ const initialNewChannelState: NewChannel = {
   channelName: '',
 };
 
-const Channels: React.FC = () => {
+interface ChannelsProps {
+  userData: FirebaseUser | null;
+}
+
+const Channels: React.FC<ChannelsProps> = ({ userData }) => {
   const dispatch = useDispatch();
-  const { userData } = useSelector<RootReducer, AuthState>(
-    (state) => state.auth,
-  );
+
   const { channels, activeChannel, firstLoad } = useSelector<
     RootReducer,
     ChannelState

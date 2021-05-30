@@ -5,6 +5,7 @@ const initialState: MessageState = {
   messages: [],
   filteredMessages: [],
   loaded: false,
+  activeUsers: [],
 };
 
 const messageSlice = createSlice({
@@ -16,8 +17,11 @@ const messageSlice = createSlice({
       state.filteredMessages = payload;
       state.loaded = true;
     },
+    setUsers(state, { payload }) {
+      state.activeUsers = payload;
+    },
   },
 });
 
-export const { setMessages } = messageSlice.actions;
+export const { setMessages, setUsers } = messageSlice.actions;
 export default messageSlice.reducer;
