@@ -6,6 +6,7 @@ const initialState: ChannelState = {
   loader: true,
   firstLoad: false,
   channels: [],
+  privateChannel: false,
 };
 
 const channelSlice = createSlice({
@@ -17,7 +18,8 @@ const channelSlice = createSlice({
       state.loader = false;
     },
     setActiveChannel(state, { payload }) {
-      state.activeChannel = payload;
+      state.activeChannel = payload.channel;
+      state.privateChannel = payload.isPrivate;
       state.firstLoad = true;
     },
   },

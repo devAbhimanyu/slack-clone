@@ -6,6 +6,7 @@ export interface ChannelState {
   error?: any;
   loader: boolean;
   firstLoad: boolean;
+  privateChannel: false;
 }
 
 export type ChannelInstance = Channel;
@@ -15,4 +16,4 @@ export type NewChannel = {
   channelDetails?: string;
 };
 
-export type FetchChannel = (channelList: ChannelState['channels']) => void;
+export type FetchChannel = <T>(channelList: ChannelState['channels']) => void;

@@ -5,24 +5,27 @@ import { setChannels, setActiveChannel } from './channelSlice';
 import { closeChannelSub, startChannelSub, addChannel } from 'utility';
 import {
   ChannelState,
-  AuthState,
+  FirebaseUser,
   RootReducer,
   ChannelInstance,
   NewChannel,
   InputChangeEvent,
   ClickEvent,
 } from 'types';
+import { setMessages } from 'features/Messages/messageSlice';
 
 const initialNewChannelState: NewChannel = {
   channelDetails: '',
   channelName: '',
 };
 
-const Channels: React.FC = () => {
+interface ChannelsProps {
+  userData: FirebaseUser | null;
+}
+
+const Channels: React.FC<ChannelsProps> = ({ userData }) => {
   const dispatch = useDispatch();
-  const { userData } = useSelector<RootReducer, AuthState>(
-    (state) => state.auth,
-  );
+
   const { channels, activeChannel, firstLoad } = useSelector<
     RootReducer,
     ChannelState
@@ -31,7 +34,9 @@ const Channels: React.FC = () => {
   const [newChannel, setNewChannel] = useState<NewChannel>(
     initialNewChannelState,
   );
+
   const [modal, setmodal] = useState(false);
+
   const fetchChannels = useCallback(
     (channelList: ChannelState['channels']) => {
       dispatch(setChannels(channelList));
@@ -46,7 +51,7 @@ const Channels: React.FC = () => {
 
   useEffect(() => {
     if (channels?.length && !firstLoad) {
-      dispatch(setActiveChannel(channels[0]));
+      dispatch(setActiveChannel({ channel: channels[0], isPrivate: false }));
     }
   }, [channels, firstLoad]);
 
@@ -55,7 +60,10 @@ const Channels: React.FC = () => {
       ? channels.map((channel) => (
           <Menu.Item
             key={channel.id}
-            onClick={() => dispatch(setActiveChannel(channel))}
+            onClick={() => {
+              dispatch(setActiveChannel({ channel, isPrivate: false }));
+              dispatch(setMessages([]));
+            }}
             name={channel.name}
             style={{ opacity: 0.7 }}
             active={channel.id === activeChannel?.id}
@@ -98,7 +106,7 @@ const Channels: React.FC = () => {
 
   return (
     <>
-      <Menu.Menu style={{ paddingBottom: '2em' }}>
+      <Menu.Menu className='menu'>
         <Menu.Item>
           <span>
             <Icon name='exchange' /> CHANNELS {channels?.length}{' '}

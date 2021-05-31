@@ -30,3 +30,9 @@ export const addChannel = (channel: ChannelInstance) => {
       console.error(err);
     });
 };
+
+export const creatDMChannel = (currentUser: string, dmUser: string) => {
+  return dmUser < currentUser
+    ? `${dmUser}/${currentUser}`
+    : `${currentUser}/${dmUser}`;
+};
