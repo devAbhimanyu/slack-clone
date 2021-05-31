@@ -6,6 +6,7 @@ export interface ChannelState {
   error?: any;
   loader: boolean;
   firstLoad: boolean;
+  privateChannel: false;
 }
 
 export type ChannelInstance = Channel;

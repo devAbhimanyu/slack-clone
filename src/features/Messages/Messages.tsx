@@ -21,9 +21,10 @@ const Messages: React.FC = () => {
   const { loaded, messages } = useSelector<RootReducer, MessageState>(
     (state) => state.messages,
   );
-  const { activeChannel } = useSelector<RootReducer, ChannelState>(
-    (state) => state.channel,
-  );
+  const { activeChannel, privateChannel } = useSelector<
+    RootReducer,
+    ChannelState
+  >((state) => state.channel);
 
   const [filterList, setFilterList] = useState<MessageM[]>([]);
   const fetchMessages: FetchMessages = useCallback(
@@ -35,7 +36,11 @@ const Messages: React.FC = () => {
 
   useEffect(() => {
     if (activeChannel)
-      startMessageFetch(fetchMessages, activeChannel.id as string);
+      startMessageFetch(
+        fetchMessages,
+        activeChannel.id as string,
+        privateChannel,
+      );
   }, [activeChannel]);
 
   const handleSearchMessages = (searchTerm: string) => {

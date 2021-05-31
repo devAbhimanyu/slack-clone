@@ -18,9 +18,10 @@ const MessageHeader: React.FC<MessageHeaderProps> = ({
   messages,
   searchCallback,
 }) => {
-  const { activeChannel } = useSelector<RootReducer, ChannelState>(
-    (state) => state.channel,
-  );
+  const { activeChannel, privateChannel } = useSelector<
+    RootReducer,
+    ChannelState
+  >((state) => state.channel);
 
   const [search, setsSearch] = useState('');
   const [searchLoading, setsSearchLoading] = useState(false);
@@ -38,6 +39,11 @@ const MessageHeader: React.FC<MessageHeaderProps> = ({
     return numUniqueUsers;
   }, [messages]);
 
+  const channelName = useMemo(() => {
+    return `${privateChannel ? '@' : '#'}${activeChannel?.name} 
+    ${privateChannel ? '' : 'Channels'} `;
+  }, [activeChannel, privateChannel]);
+
   const searchHandler: ChangeEvent = (e) => {
     const { value } = e.target;
     setsSearch(value);
@@ -51,8 +57,8 @@ const MessageHeader: React.FC<MessageHeaderProps> = ({
       {/* Channel Title */}
       <Header fluid='true' as='h2' floated='left' style={{ marginBottom: 0 }}>
         <span>
-          {activeChannel?.name} Channel
-          <Icon name={'star outline'} color='black' />
+          {channelName}
+          {!privateChannel && <Icon name={'star outline'} color='black' />}
         </span>
         <Header.Subheader>{countUniqueUsers}</Header.Subheader>
       </Header>

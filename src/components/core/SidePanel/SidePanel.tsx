@@ -20,7 +20,7 @@ const SidePanel: React.FC = () => {
     >
       <UserPanel />
       <Channels userData={userData} />
-      <DirectMessages userData={userData} />
+      <DirectMessages currUser={userData} />
     </Menu>
   );
 };

@@ -51,7 +51,7 @@ const Channels: React.FC<ChannelsProps> = ({ userData }) => {
 
   useEffect(() => {
     if (channels?.length && !firstLoad) {
-      dispatch(setActiveChannel(channels[0]));
+      dispatch(setActiveChannel({ channel: channels[0], isPrivate: false }));
     }
   }, [channels, firstLoad]);
 
@@ -61,7 +61,7 @@ const Channels: React.FC<ChannelsProps> = ({ userData }) => {
           <Menu.Item
             key={channel.id}
             onClick={() => {
-              dispatch(setActiveChannel(channel));
+              dispatch(setActiveChannel({ channel, isPrivate: false }));
               dispatch(setMessages([]));
             }}
             name={channel.name}
@@ -106,7 +106,7 @@ const Channels: React.FC<ChannelsProps> = ({ userData }) => {
 
   return (
     <>
-      <Menu.Menu style={{ paddingBottom: '2em' }}>
+      <Menu.Menu className='menu'>
         <Menu.Item>
           <span>
             <Icon name='exchange' /> CHANNELS {channels?.length}{' '}

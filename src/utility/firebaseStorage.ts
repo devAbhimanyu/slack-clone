@@ -4,9 +4,15 @@ import firebase from 'config/firebase.prod';
 const storageRef = firebase.storage().ref();
 const validTypes = ['image/jpeg', 'image/png'];
 
-export const uploadFile = (file: File) => {
+export const uploadFile = (
+  file: File,
+  isPivate: boolean,
+  channeId?: string,
+) => {
   const metadata = { contentType: mime.lookup(file.name) as string };
-  const filePath = `chat/public/${uuidv4()}.jpg`;
+  const filePath = `chat/${
+    isPivate ? 'private/' + channeId : 'public'
+  }/${uuidv4()}.jpg`;
   return storageRef.child(filePath).put(file, metadata);
 };
 

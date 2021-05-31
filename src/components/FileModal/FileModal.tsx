@@ -3,12 +3,20 @@ import { Modal, Input, Button, Icon } from 'semantic-ui-react';
 import { validateFileType, uploadFile } from 'utility';
 import { ChangeEvent, UploadTask } from 'types';
 interface FileModalProps {
+  channelId?: string;
+  isPrivate: boolean;
   show: boolean;
   onClose: () => void;
   uploadTask: React.Dispatch<React.SetStateAction<UploadTask | null>>;
 }
 
-const FileModal: React.FC<FileModalProps> = ({ show, onClose, uploadTask }) => {
+const FileModal: React.FC<FileModalProps> = ({
+  show,
+  onClose,
+  uploadTask,
+  isPrivate,
+  channelId,
+}) => {
   const [file, setFile] = useState<File | null>(null);
 
   const addFile: ChangeEvent = (event) => {
@@ -21,7 +29,7 @@ const FileModal: React.FC<FileModalProps> = ({ show, onClose, uploadTask }) => {
 
   const sendFile = () => {
     if (file && validateFileType(file.name)) {
-      const sRef = uploadFile(file);
+      const sRef = uploadFile(file, isPrivate, channelId);
       uploadTask(sRef);
       // uploadFile(file, metadata);
       setFile(null);

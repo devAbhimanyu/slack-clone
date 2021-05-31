@@ -2,22 +2,30 @@
 import firebase from 'config/firebase.prod';
 import { FetchMessages, Message } from 'types';
 const messageRef = firebase.database().ref('messages');
+const privateMessageRef = firebase.database().ref('privateMessage');
 
 export const startMessageFetch = (
   dispatcher: FetchMessages,
   channelId: string,
+  isprivate: boolean,
 ) => {
+  const ref = isprivate ? privateMessageRef : messageRef;
   let messages: Message[] = [];
-  messageRef.child(channelId).on('child_added', (snap) => {
+  ref.child(channelId).on('child_added', (snap) => {
     const value = snap.val();
     messages = [...messages, value];
     dispatcher(messages);
   });
 };
 
-export const sendMessage = async (message: Message, channelId: string) => {
+export const sendMessage = async (
+  message: Message,
+  channelId: string,
+  isprivate: boolean,
+) => {
   message.timestamp = firebase.database.ServerValue.TIMESTAMP;
-  return messageRef
+  const ref = isprivate ? privateMessageRef : messageRef;
+  return ref
     .child(channelId)
     .push()
     .set(message)
@@ -34,8 +42,10 @@ export const sendFileInstance = async (
   channeId: string,
   createMessage: (url?: string) => Promise<void>,
   url: string,
+  isprivate: boolean,
 ): Promise<boolean> => {
-  return messageRef
+  const ref = isprivate ? privateMessageRef : messageRef;
+  return ref
     .child(channeId)
     .push()
     .set(createMessage(url))

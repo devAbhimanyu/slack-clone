@@ -15,9 +15,10 @@ import {
 } from 'types';
 
 const MessageForm: React.FC = () => {
-  const { activeChannel } = useSelector<RootReducer, ChannelState>(
-    (state) => state.channel,
-  );
+  const { activeChannel, privateChannel } = useSelector<
+    RootReducer,
+    ChannelState
+  >((state) => state.channel);
   const { userData } = useSelector<RootReducer, AuthState>(
     (state) => state.auth,
   );
@@ -53,7 +54,11 @@ const MessageForm: React.FC = () => {
       } else {
         messageInstance['content'] = message;
       }
-      const success = await sendMessage(messageInstance, activeChannel.id);
+      const success = await sendMessage(
+        messageInstance,
+        activeChannel.id,
+        privateChannel,
+      );
       if (success) {
         setMessage('');
       } else {
@@ -70,6 +75,7 @@ const MessageForm: React.FC = () => {
       activeChannel?.id as string,
       createMessage,
       downloadUrl,
+      privateChannel,
     );
     setMessage('');
     setLoading(false);
@@ -150,6 +156,8 @@ const MessageForm: React.FC = () => {
         />
       </Button.Group>
       <FileModal
+        isPrivate={privateChannel}
+        channelId={activeChannel?.id}
         show={modal}
         onClose={() => {
           setModal(false);
