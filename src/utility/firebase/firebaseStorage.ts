@@ -1,6 +1,6 @@
 import mime from 'mime-types';
 import { v4 as uuidv4 } from 'uuid';
-import firebase from 'config/firebase.prod';
+import firebase from 'config/firebase';
 const storageRef = firebase.storage().ref();
 const validTypes = ['image/jpeg', 'image/png'];
 

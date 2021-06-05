@@ -1,4 +1,4 @@
-import firebase from 'config/firebase.prod';
+import firebase from 'config/firebase';
 const usersRef = firebase.database().ref('users');
 const connectedRef = firebase.database().ref('.info/connected');
 const presenceRef = firebase.database().ref('presence');

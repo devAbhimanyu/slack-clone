@@ -1,5 +1,5 @@
 /*eslint no-unused-vars: "off"*/
-import firebase from 'config/firebase.prod';
+import firebase from 'config/firebase';
 import { FetchMessages, Message } from 'types';
 const messageRef = firebase.database().ref('messages');
 const privateMessageRef = firebase.database().ref('privateMessage');

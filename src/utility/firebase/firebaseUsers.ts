@@ -1,4 +1,4 @@
-import firebase from 'config/firebase.prod';
+import firebase from 'config/firebase';
 import md5 from 'md5';
 const usersRef = firebase.database().ref('users');
 

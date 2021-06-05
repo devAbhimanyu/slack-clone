@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import firebase from 'config/firebase.prod';
+import firebase from 'config/firebase';
 import {
   ChannelInstance,
   Notification,

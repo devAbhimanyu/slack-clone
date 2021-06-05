@@ -13,6 +13,7 @@ const firebaseConfig = {
   appId: '',
   measurementId: '',
 };
+
 firebase.initializeApp(firebaseConfig);
 
 export default firebase;

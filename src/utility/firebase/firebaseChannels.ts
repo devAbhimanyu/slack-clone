@@ -1,4 +1,4 @@
-import firebase from 'config/firebase.prod';
+import firebase from 'config/firebase';
 const channelRef = firebase.database().ref('channels');
 import { ChannelInstance, FetchChannel } from 'types';
 

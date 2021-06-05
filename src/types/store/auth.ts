@@ -1,5 +1,6 @@
-import firebase from 'config/firebase.prod';
+import firebase from 'firebase';
 
+export type Firebase = typeof firebase;
 export type FirebaseUser = firebase.UserInfo;
 
 export type LoginValues = {
