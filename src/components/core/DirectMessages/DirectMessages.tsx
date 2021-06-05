@@ -8,8 +8,8 @@ import {
   presenceOnAdd,
   presenceOnRemove,
   startPresenceSub,
-} from 'utility/firebasePresence';
-import { creatDMChannel } from 'utility/firebaseChannels';
+} from 'utility';
+import { creatDMChannel } from 'utility/firebase/firebaseChannels';
 import {
   RootReducer,
   MessageState,

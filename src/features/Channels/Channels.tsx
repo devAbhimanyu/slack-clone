@@ -1,7 +1,17 @@
 import React, { useEffect, useCallback, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Menu, Icon, Modal, Form, Input, Button } from 'semantic-ui-react';
+import {
+  Menu,
+  Icon,
+  Modal,
+  Form,
+  Input,
+  Button,
+  Label,
+} from 'semantic-ui-react';
 import { setChannels, setActiveChannel } from './channelSlice';
+import { setMessages } from 'features/Messages/messageSlice';
+import { useNotifications } from 'hooks';
 import { closeChannelSub, startChannelSub, addChannel } from 'utility';
 import {
   ChannelState,
@@ -12,7 +22,6 @@ import {
   InputChangeEvent,
   ClickEvent,
 } from 'types';
-import { setMessages } from 'features/Messages/messageSlice';
 
 const initialNewChannelState: NewChannel = {
   channelDetails: '',
@@ -22,6 +31,8 @@ const initialNewChannelState: NewChannel = {
 interface ChannelsProps {
   userData: FirebaseUser | null;
 }
+
+const channelAttachecd: string[] = [];
 
 const Channels: React.FC<ChannelsProps> = ({ userData }) => {
   const dispatch = useDispatch();
@@ -44,6 +55,27 @@ const Channels: React.FC<ChannelsProps> = ({ userData }) => {
     [dispatch],
   );
 
+  const [addNotificationToChannel, clearNotifications, notifications] =
+    useNotifications();
+
+  useEffect(() => {
+    if (channels?.length) {
+      channels.forEach((ch) => {
+        const { id } = ch;
+        if (!channelAttachecd.includes(id as string)) {
+          channelAttachecd.push(id as string);
+          addNotificationToChannel(
+            id as string,
+            activeChannel as ChannelInstance,
+          );
+          console.log('channel id ', id);
+        }
+      });
+    } else {
+      channelAttachecd.length = 0;
+    }
+  }, [channels]);
+
   useEffect(() => {
     startChannelSub(fetchChannels);
     return () => closeChannelSub();
@@ -55,24 +87,42 @@ const Channels: React.FC<ChannelsProps> = ({ userData }) => {
     }
   }, [channels, firstLoad]);
 
+  const checkForNotification = (channelId?: string) => {
+    let count = 0;
+    notifications.forEach((notification) => {
+      if (notification.id === channelId) {
+        count = notification.count;
+      }
+    });
+    if (count > 0) return count;
+  };
+
+  /**
+   * rendered channel list
+   */
   const displayChannels = useMemo(() => {
     return channels?.length
       ? channels.map((channel) => (
           <Menu.Item
             key={channel.id}
             onClick={() => {
+              if (activeChannel?.id === channel.id) return;
               dispatch(setActiveChannel({ channel, isPrivate: false }));
               dispatch(setMessages([]));
+              clearNotifications(channel.id as string);
             }}
             name={channel.name}
             style={{ opacity: 0.7 }}
             active={channel.id === activeChannel?.id}
           >
+            {checkForNotification(channel.id) && (
+              <Label color='red'>{checkForNotification(channel.id)}</Label>
+            )}
             # {channel.name}
           </Menu.Item>
         ))
       : null;
-  }, [dispatch, channels, activeChannel]);
+  }, [dispatch, channels, activeChannel, notifications]);
 
   const addNewChannel: ClickEvent = async (e) => {
     e.preventDefault();
