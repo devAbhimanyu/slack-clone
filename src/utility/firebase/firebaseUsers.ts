@@ -1,4 +1,5 @@
 import firebase from 'config/firebase';
+import { UserCredential } from 'types';
 import md5 from 'md5';
 const usersRef = firebase.database().ref('users');
 
@@ -47,7 +48,7 @@ export const signoutUser = async () => {
     });
 };
 
-const saveUser = async (createdUser: firebase.auth.UserCredential) => {
+const saveUser = async (createdUser: UserCredential) => {
   if (createdUser?.user) {
     return usersRef.child(createdUser.user.uid).set({
       name: createdUser.user.displayName,

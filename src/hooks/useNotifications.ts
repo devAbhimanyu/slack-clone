@@ -4,20 +4,12 @@ import firebase from 'config/firebase';
 import {
   ChannelInstance,
   Notification,
-  AddNotificationForChannel,
-  StringToVoidFunc,
   RootReducer,
   ChannelState,
+  Snapshot,
+  UseNotification,
 } from 'types';
 const messageRef = firebase.database().ref('messages');
-
-// let notifications: Notification[] = [];
-
-type UseNotification = [
-  AddNotificationForChannel,
-  StringToVoidFunc,
-  Notification[],
-];
 
 const useNotifications = (): UseNotification => {
   const notifications = useRef<Notification[]>([]);
@@ -34,10 +26,7 @@ const useNotifications = (): UseNotification => {
     setNotificationState(notifications.current);
   }, [notifications.current]);
 
-  const handleNotifications = (
-    channelId: string,
-    snap: firebase.database.DataSnapshot,
-  ) => {
+  const handleNotifications = (channelId: string, snap: Snapshot) => {
     let lastTotal = 0;
     const notificationsCopy = notifications.current.map((notification) => ({
       ...notification,

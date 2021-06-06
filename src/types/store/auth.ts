@@ -2,6 +2,8 @@ import firebase from 'firebase';
 
 export type Firebase = typeof firebase;
 export type FirebaseUser = firebase.UserInfo;
+export type Snapshot = firebase.database.DataSnapshot;
+export type UserCredential = firebase.auth.UserCredential;
 
 export type LoginValues = {
   email: string;

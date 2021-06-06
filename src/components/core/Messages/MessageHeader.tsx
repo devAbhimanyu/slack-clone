@@ -1,12 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Header, Segment, Input, Icon } from 'semantic-ui-react';
+import { useFavourite } from 'hooks';
 import {
   RootReducer,
   ChannelState,
   ChangeEvent,
   Message,
   StringToVoidFunc,
+  ChannelInstance,
 } from 'types';
 
 interface MessageHeaderProps {
@@ -22,9 +24,18 @@ const MessageHeader: React.FC<MessageHeaderProps> = ({
     RootReducer,
     ChannelState
   >((state) => state.channel);
-
   const [search, setsSearch] = useState('');
   const [searchLoading, setsSearchLoading] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const [addToFavourites, favChannels] = useFavourite();
+
+  useEffect(() => {
+    console.log('check fav effect');
+    const list = favChannels.map((ch) => ch.id);
+    const checkFav = list.includes(activeChannel?.id);
+    setIsFavorite(checkFav);
+  }, [favChannels, activeChannel]);
 
   const countUniqueUsers = useMemo(() => {
     const uniqueUsers = messages.reduce((acc, message) => {
@@ -52,13 +63,24 @@ const MessageHeader: React.FC<MessageHeaderProps> = ({
     searchCallback(value);
   };
 
+  const changeHandler = () => {
+    addToFavourites(activeChannel as ChannelInstance, !isFavorite);
+    setIsFavorite(!isFavorite);
+  };
+
   return (
     <Segment clearing>
       {/* Channel Title */}
       <Header fluid='true' as='h2' floated='left' style={{ marginBottom: 0 }}>
         <span>
           {channelName}
-          {!privateChannel && <Icon name={'star outline'} color='black' />}
+          {!privateChannel && (
+            <Icon
+              onClick={changeHandler}
+              name={isFavorite ? 'bookmark' : 'bookmark outline'}
+              color={isFavorite ? 'yellow' : 'black'}
+            />
+          )}
         </span>
         <Header.Subheader>{countUniqueUsers}</Header.Subheader>
       </Header>
