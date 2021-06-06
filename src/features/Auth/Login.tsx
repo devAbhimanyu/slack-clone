@@ -36,7 +36,7 @@ export default function Login() {
       setError([]);
       try {
         const user = await loginUser(login.email, login.password);
-        console.log(user);
+        console.log('user', user);
       } catch (error) {
         setloading(false);
         const err = [...errors, error];

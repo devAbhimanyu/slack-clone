@@ -42,7 +42,6 @@ const DirectMessages: React.FC<DirectMessagesProps> = ({ currUser }) => {
   );
 
   const updateUserStatus = (uid: string, online: boolean) => {
-    console.log(uid, online);
     const updatedUsers = activeUsers.reduce((acc, user) => {
       if (user.uid === uid) {
         const status = online ? 'online' : 'offline';
