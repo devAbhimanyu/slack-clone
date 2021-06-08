@@ -35,12 +35,14 @@ const Messages: React.FC = () => {
   );
 
   useEffect(() => {
-    if (activeChannel)
+    if (activeChannel?.id) {
+      console.log(activeChannel?.id);
       startMessageFetch(
         fetchMessages,
         activeChannel.id as string,
         privateChannel,
       );
+    }
   }, [activeChannel]);
 
   const handleSearchMessages = (searchTerm: string) => {

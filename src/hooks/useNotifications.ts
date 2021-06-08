@@ -2,9 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import firebase from 'config/firebase.prod';
 import {
-  ChannelInstance,
   Notification,
-  AddNotificationForChannel,
   StringToVoidFunc,
   RootReducer,
   ChannelState,
@@ -13,16 +11,13 @@ const messageRef = firebase.database().ref('messages');
 
 // let notifications: Notification[] = [];
 
-type UseNotification = [
-  AddNotificationForChannel,
-  StringToVoidFunc,
-  Notification[],
-];
+type UseNotification = [StringToVoidFunc, Notification[]];
+let channelAttachecd: string[] = [];
 
 const useNotifications = (): UseNotification => {
   const notifications = useRef<Notification[]>([]);
 
-  const { activeChannel } = useSelector<RootReducer, ChannelState>(
+  const { channels, activeChannel } = useSelector<RootReducer, ChannelState>(
     (state) => state.channel,
   );
 
@@ -30,9 +25,8 @@ const useNotifications = (): UseNotification => {
     [],
   );
 
-  useEffect(() => {
-    setNotificationState(notifications.current);
-  }, [notifications.current]);
+  // useEffect(() => {
+  // }, [notifications.current]);
 
   const handleNotifications = (
     channelId: string,
@@ -64,18 +58,34 @@ const useNotifications = (): UseNotification => {
       });
     }
     notifications.current = [...notificationsCopy];
+    setNotificationState(notifications.current);
   };
 
-  const addNotificationToChannel = (
-    channelId: string,
-    activeChannel: ChannelInstance,
-  ) => {
-    messageRef.child(channelId).on('value', (snap) => {
-      if (activeChannel) {
-        handleNotifications(channelId, snap);
-      }
-    });
-  };
+  useEffect(() => {
+    if (channels?.length && activeChannel?.id) {
+      channels.forEach((channel) => {
+        const { id } = channel;
+        if (!channelAttachecd.includes(id as string)) {
+          channelAttachecd.push(id as string);
+          messageRef.child(id as string).on('value', (snap) => {
+            handleNotifications(id as string, snap);
+          });
+        }
+      });
+    } else {
+      channelAttachecd.length = 0;
+    }
+    return () => {
+      if (channels)
+        channels.forEach((channel) => {
+          const { id } = channel;
+          if (channelAttachecd.includes(id as string)) {
+            messageRef.child(id as string).off();
+            channelAttachecd = channelAttachecd.filter((ch) => ch !== id);
+          }
+        });
+    };
+  }, [channels, activeChannel]);
 
   const clearNotifications = (channelId: string) => {
     const notificationsCopy = notifications.current.map((notification) => ({
@@ -92,7 +102,7 @@ const useNotifications = (): UseNotification => {
     }
   };
 
-  return [addNotificationToChannel, clearNotifications, notificationsState];
+  return [clearNotifications, notificationsState];
 };
 
 export default useNotifications;

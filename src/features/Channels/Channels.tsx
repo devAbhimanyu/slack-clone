@@ -32,8 +32,6 @@ interface ChannelsProps {
   userData: FirebaseUser | null;
 }
 
-const channelAttachecd: string[] = [];
-
 const Channels: React.FC<ChannelsProps> = ({ userData }) => {
   const dispatch = useDispatch();
 
@@ -55,26 +53,7 @@ const Channels: React.FC<ChannelsProps> = ({ userData }) => {
     [dispatch],
   );
 
-  const [addNotificationToChannel, clearNotifications, notifications] =
-    useNotifications();
-
-  useEffect(() => {
-    if (channels?.length) {
-      channels.forEach((ch) => {
-        const { id } = ch;
-        if (!channelAttachecd.includes(id as string)) {
-          channelAttachecd.push(id as string);
-          addNotificationToChannel(
-            id as string,
-            activeChannel as ChannelInstance,
-          );
-          console.log('channel id ', id);
-        }
-      });
-    } else {
-      channelAttachecd.length = 0;
-    }
-  }, [channels]);
+  const [clearNotifications, notifications] = useNotifications();
 
   useEffect(() => {
     startChannelSub(fetchChannels);

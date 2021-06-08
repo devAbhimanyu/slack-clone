@@ -24,7 +24,6 @@ const FileModal: React.FC<FileModalProps> = ({
     if (targetFile) {
       setFile(targetFile);
     }
-    console.log(targetFile);
   };
 
   const sendFile = () => {
